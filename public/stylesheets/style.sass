@@ -1,0 +1,183 @@
+*
+  margin: 0
+  padding: 0
+
+body
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
+  overflow-x: hidden
+
+a
+  color: #00B7FF
+.container
+  display: block
+  header
+    display: flex
+    justify-content: space-between
+    align-items: center
+    text-align: center
+    position: relative
+    background: #ccc
+    padding: 0 35px
+
+    img
+      width: 150px
+
+    button 
+      background:  transparent
+      border:  none
+      outline:  none
+      position:  relative
+      width:  30px
+      height: 23px
+      cursor: pointer
+
+    button span
+      content:  ''
+      width:  30px
+      height:  3px
+      background:  #000
+      position:  absolute
+      left: 0
+      right: 0
+      top: 0
+      bottom: 0
+      -webkit-transition: all 0.5s ease
+      -moz-transition: all 0.5s ease
+      -o-transition: all 0.5s ease
+      transition: all 0.5s ease
+
+    button span:nth-child(2)
+      top: 10px
+
+    button span:last-child
+      top: 20px
+
+    button.menu-visible span
+      transform: rotate(-45deg)
+      top: 50%
+
+    button.menu-visible span:last-child
+      transform: rotate(45deg)
+
+    button.menu-visible span:nth-child(2)
+      background: transparent
+        
+    #main-menu
+      position: absolute
+      top: 100%
+      right: 0  
+      transform: translateX(100%)
+      width: 350px
+      -webkit-transition: all 0.5s ease
+      -moz-transition: all 0.5s ease
+      -o-transition: all 0.5s ease
+      transition: all 0.5s ease
+      background: #ccc
+      z-index: 99;
+
+    #main-menu.menu-visible
+      transform: translateX(0)
+
+    #main-menu li
+      list-style: none
+      font-size: 22px
+      line-height: 40px
+      a
+        color: #000
+        cursor: pointer
+        display: block
+        text-decoration: none
+        -webkit-transition: all 0.5s ease
+        -moz-transition: all 0.5s ease
+        -o-transition: all 0.5s ease
+        transition: all 0.5s ease
+
+        &:hover
+          background: #eee
+  content
+    display: block;
+    padding: 20px 35px;
+    
+    .title-section
+      display: flex
+      justify-content: space-between
+      align-items: center
+      text-align: center
+      h2
+        display: inline-block;
+
+    button
+      background: #fff
+      border: none
+      outline: none
+      font-size: 20px
+      cursor: pointer
+      i
+        color: #4CAF50
+        margin-right: 5px;
+        font-size: 18px;
+      &.add-row-button.open-form i
+        transform: rotate(45deg);
+      &.add-row-button.open-form
+        width: 16px;
+        overflow: hidden;
+        height: 22px;
+    form
+      &.form-hidden
+        display: none
+      .input-wrapper
+        position: relative
+        max-width: 350px
+        display: inline-block
+        width: 100%
+        margin: 10px 20px 0 0
+      input[type="text"]
+        font: 15px/24px "Lato", Arial, sans-serif
+        color: #333
+        width: 100%
+        box-sizing: border-box
+        letter-spacing: 1px
+      .form-input
+        border: 0
+        padding: 7px 0
+        border-bottom: 1px solid #ccc
+        outline: none
+        width: 100%
+        & ~ .focus-border
+          position: absolute
+          bottom: 0
+          left: 0
+          width: 0
+          height: 2px
+          background-color: #4caf50
+          transition: 0.4s
+        &:focus ~ .focus-border
+          width: 100%
+          transition: 0.4s
+        &.error ~ .focus-border
+          background-color: #f44336
+          width: 100%
+
+    table
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif
+      border-collapse: collapse
+      width: 100%
+      font-size: 18px
+      margin-top: 20px
+
+      th, td
+        border: 1px solid #ddd
+        padding: 8px
+
+      tr:nth-child(even)
+        background-color: #f2f2f2
+
+      tr:hover
+        background-color: #ddd
+
+      th
+        padding-top: 12px
+        padding-bottom: 12px
+        text-align: left
+        background-color: #4CAF50
+        color: white
