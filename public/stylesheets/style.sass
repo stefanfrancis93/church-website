@@ -1,6 +1,7 @@
 *
   margin: 0
   padding: 0
+  box-sizing: border-box
 
 body
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif
@@ -73,7 +74,7 @@ a
       -o-transition: all 0.5s ease
       transition: all 0.5s ease
       background: #ccc
-      z-index: 99;
+      z-index: 99
 
     #main-menu.menu-visible
       transform: translateX(0)
@@ -95,8 +96,9 @@ a
         &:hover
           background: #eee
   content
-    display: block;
-    padding: 20px 35px;
+    display: inline-block
+    padding: 20px 35px
+    width: 100%
     
     .title-section
       display: flex
@@ -104,7 +106,68 @@ a
       align-items: center
       text-align: center
       h2
-        display: inline-block;
+        display: inline-block
+      .container-3
+        width: 300px
+        vertical-align: middle
+        white-space: nowrap
+        position: relative
+
+        .icon
+          position: absolute
+          top: 50%
+          left: 0
+          margin-left: 10px
+          margin-top: 10px
+          z-index: 1
+          color: #4f5b66
+         
+          -webkit-transition: all .55s ease
+          -moz-transition: all .55s ease
+          -ms-transition: all .55s ease
+          -o-transition: all .55s ease
+          transition: all .55s ease
+       
+        input#search
+          width: 300px;
+          height: 35px;
+          background: #e0efe1;
+          border: 1px solid #4CAF50;
+          font-size: 10pt;
+          float: left;
+          color: #262626;
+          padding-left: 30px;
+          -webkit-border-radius: 5px;
+          -moz-border-radius: 5px;
+          border-radius: 5px;
+          /* color: #fff; */
+          padding-right: 10px;
+          outline: none;
+
+          &:focus, 
+          &:active
+              outline:none 
+         
+        &:hover .icon
+          margin-top: 9px
+          color: #93a2ad
+          transform: scale(1.2)
+          -webkit-transform: scale(1.2) /* Safari and Chrome */
+          -moz-transform: scale(1.2) /* Firefox */
+          -ms-transform: scale(1.2) /* IE 9 */
+          -o-transform: scale(1.2) /* Opera */
+
+          &::-webkit-input-placeholder
+             color: #65737e
+
+          &:-moz-placeholder /* Firefox 18- */
+             color: #65737e
+
+          &::-moz-placeholder /* Firefox 19+ */
+             color: #65737e  
+
+          &:-ms-input-placeholder /* IE */
+             color: #65737e
 
     button
       background: #fff
@@ -114,14 +177,14 @@ a
       cursor: pointer
       i
         color: #4CAF50
-        margin-right: 5px;
-        font-size: 18px;
+        margin-right: 5px
+        font-size: 18px
       &.add-row-button.open-form i
-        transform: rotate(45deg);
+        transform: rotate(45deg)
       &.add-row-button.open-form
-        width: 16px;
-        overflow: hidden;
-        height: 22px;
+        width: 16px
+        overflow: hidden
+        height: 22px
     form
       &.form-hidden
         display: none
@@ -157,27 +220,37 @@ a
         &.error ~ .focus-border
           background-color: #f44336
           width: 100%
-
-    table
-      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif
-      border-collapse: collapse
-      width: 100%
-      font-size: 18px
+    .table-wrapper
+      min-height: 300px
       margin-top: 20px
+      table
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif
+        border-collapse: collapse
+        width: 100%
+        font-size: 18px
 
-      th, td
-        border: 1px solid #ddd
-        padding: 8px
+        tr
+          th, td
+            border: 1px solid #ddd
+            padding: 8px
 
-      tr:nth-child(even)
-        background-color: #f2f2f2
+          th
+            padding-top: 12px
+            padding-bottom: 12px
+            text-align: left
+            background-color: #4CAF50
+            color: white
+            i
+              float: right
+              line-height: 20px
+          &.hide-row
+            display: none
 
-      tr:hover
-        background-color: #ddd
-
-      th
-        padding-top: 12px
-        padding-bottom: 12px
-        text-align: left
-        background-color: #4CAF50
-        color: white
+          &:hover
+            background-color: #ddd
+          
+          &:nth-child(even)
+            background-color: #f2f2f2
+    .pagination-page
+      float: right
+      margin: 20px 0 0
