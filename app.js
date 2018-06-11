@@ -34,7 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 var mongoose = require('mongoose');
 
 //Set up default mongoose connection
-var mongoDB = 'mongodb://127.0.0.1/newTest';
+var mongoDB = 'mongodb://admin:admin123@ds221609.mlab.com:21609/dbchurchwebsite';
 mongoose.connect(mongoDB);
 // Get Mongoose to use the global promise library
 mongoose.Promise = global.Promise;
