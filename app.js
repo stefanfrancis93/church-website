@@ -11,6 +11,7 @@ var dataRouter    = require('./routes/data');
 var newRouter     = require('./routes/new');
 var dePaulRouter  = require('./routes/vincent-de-paul');
 var rowRouter     = require('./routes/save-data');
+var dateFilter    = require('./routes/date-filter')
 
 var app = express();
 
@@ -50,6 +51,7 @@ app.use('/data', dataRouter);
 app.use('/new', newRouter);
 app.use('/vincent-de-paul', dePaulRouter);
 app.use('/save_row', rowRouter);
+app.use('/get_date_filter', dateFilter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

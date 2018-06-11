@@ -6,7 +6,9 @@ var handleError = require('../helpers/handleError');
 /* GET users listing. */
 router.post('/', function(req, res, next) {
   var data = {};
-  data.date = req.body.date;
+  var date1 = req.body.date.split('-'),
+    x = new Date(date1[0], date1[1]-1).getTime();
+  data.date = x;
   data.voucher = Number(req.body.voucher);
   data.details = req.body.details;
   data.credit = Number(req.body.credit);

@@ -4,6 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/simplePagination.css' />
+    <link rel='stylesheet' href='/stylesheets/daterangepicker.css' />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" 
       integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
       crossorigin="anonymous">
@@ -11,6 +12,8 @@
     <script type="text/javascript" src="/javascripts/main.js"></script>
     <script type="text/javascript" src="/javascripts/ejs.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.simplePagination.js"></script>
+    <script type="text/javascript" src="/javascripts/moment.min.js"></script>
+    <script type="text/javascript" src="/javascripts/daterangepicker.js"></script>
   </head>
   <body>
   	<div class="page container" id="vincent-de-paul">
@@ -26,7 +29,7 @@
 		    	<li><a href="/">Home</a></li>
 		    	<li><a>News</a></li>
 		    	<li><a>Gallery</a></li>
-		    	<li><a href="vincent-de-paul">Society of Saint Vincent de Paul</a></li>
+		    	<li><a href="/vincent-de-paul">Society of Saint Vincent de Paul</a></li>
 		    	<li><a>Contact Us</a></li>
 		    </ul>
   		</header>
@@ -34,12 +37,13 @@
         <div class="title-section">
     	    <h2><%= title %> Records</h2>
           <div class="box">
+            <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
             <div class="container-3">
                 <span class="icon"><i class="fa fa-search"></i></span>
-                <input type="search" id="search" placeholder="Search..." />
+                <input type="search" value="<%= searchQuery %>" id="search" placeholder="Search..." />
             </div>
+            <button class="add-row-button"><i class="fas fa-plus"></i><span class="show-add">Add row</span><span class="cancel-add">Cancel</span></button>
           </div>
-          <button class="add-row-button"><i class="fas fa-plus"></i>Add row</button>
         </div>
         <form action="/save_row/" method="post" id="add-row-form" class="form-hidden">
             <div class="input-wrapper">
@@ -86,7 +90,7 @@
             <tbody>
               <% for (var i = 0; i < data.length; i++) { %>
                 <tr>
-                  <td><%= data[i].date %></td>
+                  <td><%= data[i].date.getFullYear() +"-"+ ('0' + parseInt(data[i].date.getMonth()+1)).slice(-2) %></td>
                   <td><%= data[i].voucher %></td>
                   <td><%= data[i].details %></td>
                   <td><%= data[i].credit %></td>

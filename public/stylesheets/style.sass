@@ -107,67 +107,86 @@ a
       text-align: center
       h2
         display: inline-block
-      .container-3
-        width: 300px
-        vertical-align: middle
-        white-space: nowrap
-        position: relative
-
-        .icon
-          position: absolute
-          top: 50%
-          left: 0
-          margin-left: 10px
-          margin-top: 10px
-          z-index: 1
-          color: #4f5b66
-         
-          -webkit-transition: all .55s ease
-          -moz-transition: all .55s ease
-          -ms-transition: all .55s ease
-          -o-transition: all .55s ease
-          transition: all .55s ease
-       
-        input#search
-          width: 300px;
+      .box
+        display: flex
+        input[name="daterange"]
+          display: block;
+          line-height: 1.5;
+          color: #495057;
+          background-color: #fff;
+          background-clip: padding-box;
+          border: 1px solid #ced4da;
+          transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+          font-size: 14px;
+          padding: 6px;
+          width: 100%;
+          border-radius: 4px;
           height: 35px;
-          background: #e0efe1;
-          border: 1px solid #4CAF50;
-          font-size: 10pt;
-          float: left;
-          color: #262626;
-          padding-left: 30px;
-          -webkit-border-radius: 5px;
-          -moz-border-radius: 5px;
-          border-radius: 5px;
-          /* color: #fff; */
-          padding-right: 10px;
-          outline: none;
+          margin-right: 20px;
+          flex: 3;
+        .container-3
+          width: 300px
+          vertical-align: middle
+          white-space: nowrap
+          position: relative
+          margin-right: 20px
+          flex: 1;
 
-          &:focus, 
-          &:active
-              outline:none 
+          .icon
+            position: absolute
+            top: 0
+            left: 0
+            margin-left: 10px
+            margin-top: 10px
+            z-index: 1
+            color: #4f5b66
+           
+            -webkit-transition: all .55s ease
+            -moz-transition: all .55s ease
+            -ms-transition: all .55s ease
+            -o-transition: all .55s ease
+            transition: all .55s ease
          
-        &:hover .icon
-          margin-top: 9px
-          color: #93a2ad
-          transform: scale(1.2)
-          -webkit-transform: scale(1.2) /* Safari and Chrome */
-          -moz-transform: scale(1.2) /* Firefox */
-          -ms-transform: scale(1.2) /* IE 9 */
-          -o-transform: scale(1.2) /* Opera */
+          input#search
+            width: 300px
+            height: 35px
+            background: #e0efe1
+            border: 1px solid #4CAF50
+            font-size: 10pt
+            float: left
+            color: #262626
+            padding-left: 30px
+            -webkit-border-radius: 5px
+            -moz-border-radius: 5px
+            border-radius: 5px
+            /* color: #fff */
+            padding-right: 10px
+            outline: none
 
-          &::-webkit-input-placeholder
-             color: #65737e
+            &:focus, 
+            &:active
+                outline:none 
+           
+          &:hover .icon
+            margin-top: 9px
+            color: #93a2ad
+            transform: scale(1.2)
+            -webkit-transform: scale(1.2) /* Safari and Chrome */
+            -moz-transform: scale(1.2) /* Firefox */
+            -ms-transform: scale(1.2) /* IE 9 */
+            -o-transform: scale(1.2) /* Opera */
 
-          &:-moz-placeholder /* Firefox 18- */
-             color: #65737e
+            &::-webkit-input-placeholder
+               color: #65737e
 
-          &::-moz-placeholder /* Firefox 19+ */
-             color: #65737e  
+            &:-moz-placeholder /* Firefox 18- */
+               color: #65737e
 
-          &:-ms-input-placeholder /* IE */
-             color: #65737e
+            &::-moz-placeholder /* Firefox 19+ */
+               color: #65737e  
+
+            &:-ms-input-placeholder /* IE */
+               color: #65737e
 
     button
       background: #fff
@@ -175,6 +194,8 @@ a
       outline: none
       font-size: 20px
       cursor: pointer
+      width: 95px;
+      flex: 2;
       i
         color: #4CAF50
         margin-right: 5px
@@ -182,9 +203,11 @@ a
       &.add-row-button.open-form i
         transform: rotate(45deg)
       &.add-row-button.open-form
-        width: 16px
-        overflow: hidden
-        height: 22px
+        .show-add
+          display: none
+      &:not(.open-form)
+        .cancel-add
+          display: none
     form
       &.form-hidden
         display: none
@@ -233,7 +256,9 @@ a
           th, td
             border: 1px solid #ddd
             padding: 8px
-
+          td
+            em
+              background-color: #ffa500
           th
             padding-top: 12px
             padding-bottom: 12px

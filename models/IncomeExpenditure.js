@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var DataSchema = Schema({
-  date    			: String,
+  date    			: Date,
   voucher			: Number,
   details 			: String,
   credit			: Number,

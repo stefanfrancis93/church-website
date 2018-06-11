@@ -8,6 +8,8 @@ jQuery(function($) {
 
   $(".add-row-button").on("click", function() {
     $form.slideToggle(function(){
+      $(!$form.hasClass("form-hidden"))
+        resetForm($form);
       $form.toggleClass("form-hidden");
       $(".add-row-button").toggleClass("open-form");
     });  
@@ -40,6 +42,25 @@ jQuery(function($) {
       }
     });
   });
+  $('input[name="daterange"]').daterangepicker({
+    opens: 'left'
+  }, function(start, end, label) {
+
+    var date1 = start.format('YYYY-MM').split('-'),
+      date2 = end.format('YYYY-MM').split('-'),
+      data = {
+        x:new Date(date1[0], date1[1]-1).getTime(),
+        y:new Date(date2[0], date2[1]-1).getTime()
+      }
+    $.ajax({
+      type: "POST",
+      url: "/get_date_filter",
+      data: data,
+      success: function( response ) {
+        console.log(response);
+      }
+    });
+  });
   initPagination();
 });
 
@@ -47,7 +68,7 @@ var addNewRow = function(data) {
 
   var template = 
     "<tr>"+
-      "<td><%= data.date %></td>"+
+      "<td><%= data[i].date.getFullYear() +"-"+ ('0' + parseInt(data[i].date.getMonth()+1)).slice(-2) %></td>"+
       "<td><%= data.voucher %></td>"+
       "<td><%= data.details %></td>"+
       "<td><%= data.credit %></td>"+
@@ -76,6 +97,10 @@ var validateForm = function() {
 
 var resetForm = function($form) {
   $form[0].reset();
+  $form = $('#add-row-form :input:not([type="submit"])');
+  $form.each(function(index,item){
+    $(item).removeClass("error");
+  });
 }
 
 function sortTable(n) {
@@ -211,16 +236,40 @@ var searchTable = function() {
   table = document.getElementById("dataTable");
   tr = table.getElementsByTagName("TR");
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("TD");
-    $(td).each(function(index, element) {
-      if (element.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        if ($(tr[i]).hasClass('hide-row'))
-          $(tr[i]).removeClass('hide-row');
+  removeHighlighting($("#dataTable tr em"));
+
+/*  $(tr).each(function(index) {
+    if (index !== 0) {
+      $row = $(this);
+
+      var $tdElement = $row.find("td:nth-child(3)");
+      var value = $tdElement.text();
+      var matchedIndex = value.toUpperCase().indexOf(filter);
+
+      if (matchedIndex > -1) {
+        if ($row.hasClass('hide-row')) $row.removeClass('hide-row');
+        addHighlighting($tdElement, filter, matchedIndex);
       } else {
-        $(tr[i]).addClass('hide-row');
+        $row.addClass('hide-row');
       }
-    });
-  }
+    }
+  });*/
+
+  window.location = "/vincent-de-paul/search/"+input.value
+}
+
+// removes highlighting by replacing each em tag within the specified elements with it's content
+var removeHighlighting = function(highlightedElements) {
+    highlightedElements.each(function(){
+        var element = $(this);
+        element.replaceWith(element.html());
+    })
+}
+
+// add highlighting by wrapping the matched text into an em tag, replacing the current elements, html value with it
+var addHighlighting = function(element, textToHighlight, index) {
+    var text = element.text(),
+      newText = text.substring(0,index) + '<em>' + text.substring(index,index+textToHighlight.length) + '</em>' + text.substring(index+textToHighlight.length,text.length);
+
+    element.html(newText);
 }
