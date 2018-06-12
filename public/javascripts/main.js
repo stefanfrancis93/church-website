@@ -61,14 +61,44 @@ jQuery(function($) {
       }
     });
   });
-  initPagination();
+  $("span.next").on('click', function(event) {
+    event.preventDefault();
+    /* Act on the event */
+    var data = {
+      pageNum: 2,
+      pageSize: 5
+    };
+    $.ajax({
+      type: "GET",
+      url: "/vincent-de-paul",
+      data: data,
+      success: function( response ) {
+        var template = 
+          "<tr data-node-id='<%= data._id %>'>"+
+            "<td><%= data.date.slice(0,7) %></td>"+
+            "<td><%= data.voucher %></td>"+
+            "<td><%= data.details %></td>"+
+            "<td><%= data.credit %></td>"+
+            "<td><%= data.debit %></td>"+
+            "<td><%= data.bank_credit_debit %></td>"+
+            "<td><%= data.cash_in_bank %></td>"+
+            "<td><%= data.cash_in_hand %></td>"+
+          "</tr>", html;
+        $(response).each(function(index, el) {
+          html += ejs.render(template, {data: el});
+        });
+        $("#dataTable tbody").html(html);
+      }
+    });
+  });
+  // initPagination();
 });
 
 var addNewRow = function(data) {
 
   var template = 
-    "<tr>"+
-      "<td><%= data[i].date.getFullYear() +"-"+ ('0' + parseInt(data[i].date.getMonth()+1)).slice(-2) %></td>"+
+    "<tr data-node-id='<%= data._id %>'>"+
+      "<td><%= data.date.slice(0,7) %></td>"+
       "<td><%= data.voucher %></td>"+
       "<td><%= data.details %></td>"+
       "<td><%= data.credit %></td>"+

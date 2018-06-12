@@ -3,7 +3,6 @@
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel='stylesheet' href='/stylesheets/simplePagination.css' />
     <link rel='stylesheet' href='/stylesheets/daterangepicker.css' />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" 
       integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
@@ -11,7 +10,6 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="/javascripts/main.js"></script>
     <script type="text/javascript" src="/javascripts/ejs.js"></script>
-    <script type="text/javascript" src="/javascripts/jquery.simplePagination.js"></script>
     <script type="text/javascript" src="/javascripts/moment.min.js"></script>
     <script type="text/javascript" src="/javascripts/daterangepicker.js"></script>
   </head>
@@ -89,7 +87,7 @@
             </thead>
             <tbody>
               <% for (var i = 0; i < data.length; i++) { %>
-                <tr>
+                <tr data-node-id="<%= data[i]._id %>">
                   <td><%= data[i].date.getFullYear() +"-"+ ('0' + parseInt(data[i].date.getMonth()+1)).slice(-2) %></td>
                   <td><%= data[i].voucher %></td>
                   <td><%= data[i].details %></td>
@@ -103,7 +101,12 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-page"></div>
+        <div class="pagination-wrapper">
+          <ul>
+            <li class="disabled"><span class="prev">Prev</span></li>
+            <li class="disabled"><span class="next">Next</span></li>
+          </ul>
+        </div>
       </content>
   	</div>
   </body>
