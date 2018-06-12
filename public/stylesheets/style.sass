@@ -9,7 +9,7 @@ body
 
 a
   color: #00B7FF
-.container
+.main-wrapper
   display: block
   header
     display: flex
@@ -135,17 +135,19 @@ a
           .icon
             position: absolute
             top: 0
-            left: 0
-            margin-left: 10px
-            margin-top: 10px
+            bottom: 0
+            left: 10px
+            margin: auto
+            height: 16px
             z-index: 1
             color: #4f5b66
-           
             -webkit-transition: all .55s ease
             -moz-transition: all .55s ease
             -ms-transition: all .55s ease
             -o-transition: all .55s ease
             transition: all .55s ease
+            i
+              display: block;
          
           input#search
             width: 300px
@@ -276,6 +278,16 @@ a
           
           &:nth-child(even)
             background-color: #f2f2f2
-    .pagination-page
+    .pagination-wrapper
       float: right
       margin: 20px 0 0
+      ul
+        .page-item
+          .page-link
+            color: #4CAF50;
+          &:hover
+            color: #4CAF50;
+          &.active .page-link
+            background-color: #4CAF50;
+            border-color: #4CAF50;
+            color: #fff;

@@ -51,27 +51,29 @@ jQuery(function($) {
       data = {
         x:new Date(date1[0], date1[1]-1).getTime(),
         y:new Date(date2[0], date2[1]-1).getTime()
-      }
-    $.ajax({
-      type: "POST",
-      url: "/get_date_filter",
-      data: data,
-      success: function( response ) {
-        console.log(response);
-      }
-    });
+      };
+    window.location = "/vincent-de-paul/get_date_filter?x="+data.x+"&y="+data.y
   });
-  $("span.next").on('click', function(event) {
+  var startPage = parseInt(window.location.pathname.split('/').slice(-1)[0]) > 0 ? parseInt(window.location.pathname.split('/').slice(-1)[0]) : 1;
+  startPage = parseInt(window.location.pathname.split('/').slice(-1)[0]) > Math.ceil($("#total").val()/5) ? 1 : startPage;
+  $('#pagination').twbsPagination({
+      totalPages: Math.ceil($("#total").val()/5),
+      visiblePages: 5,
+      startPage: startPage,
+      initiateStartPageClick: false,
+      onPageClick: changeToPage
+  });
+});
+
+var changeToPage = function(event, pageNum) {
     event.preventDefault();
-    /* Act on the event */
     var data = {
-      pageNum: 2,
+      pageNum: pageNum,
       pageSize: 5
     };
-    $.ajax({
+/*    $.ajax({
       type: "GET",
-      url: "/vincent-de-paul",
-      data: data,
+      url: "/vincent-de-paul/"+data.pageNum,
       success: function( response ) {
         var template = 
           "<tr data-node-id='<%= data._id %>'>"+
@@ -89,10 +91,9 @@ jQuery(function($) {
         });
         $("#dataTable tbody").html(html);
       }
-    });
-  });
-  // initPagination();
-});
+    });*/
+    window.location = "/vincent-de-paul/"+data.pageNum
+  }
 
 var addNewRow = function(data) {
 
@@ -199,66 +200,6 @@ function sortTable(n) {
   }
 }
 
-var initPagination = function() {
-  // Consider adding an ID to your table
-  // incase a second table ever enters the picture.
-  var items = $("#dataTable tbody tr");
-
-  var numItems = items.length;
-  var perPage = 5;
-
-  // Only show the first 2 (or first `per_page`) items initially.
-  items.slice(perPage).hide();
-
-  // Now setup the pagination using the `.pagination-page` div.
-  $(".pagination-page").pagination({
-      items: numItems,
-      itemsOnPage: perPage,
-      cssStyle: "light-theme",
-
-      // This is the actual page changing functionality.
-      onPageClick: function(pageNumber) {
-          // We need to show and hide `tr`s appropriately.
-          var showFrom = perPage * (pageNumber - 1);
-          var showTo = showFrom + perPage;
-
-          // We'll first hide everything...
-          items.hide()
-               // ... and then only show the appropriate rows.
-               .slice(showFrom, showTo).show();
-      }
-  });
-
-
-
-  // EDIT: Let's cover URL fragments (i.e. #page-3 in the URL).
-  // More thoroughly explained (including the regular expression) in: 
-  // https://github.com/bilalakil/bin/tree/master/simplepagination/page-fragment/index.html
-
-  // We'll create a function to check the URL fragment
-  // and trigger a change of page accordingly.
-  function checkFragment() {
-      // If there's no hash, treat it like page 1.
-      var hash = window.location.hash || "#page-1";
-
-      // We'll use a regular expression to check the hash string.
-      hash = hash.match(/^#page-(\d+)$/);
-
-      if(hash) {
-          // The `selectPage` function is described in the documentation.
-          // We've captured the page number in a regex group: `(\d+)`.
-          $(".pagination-page").pagination("selectPage", parseInt(hash[1]));
-      }
-  };
-
-  // We'll call this function whenever back/forward is pressed...
-  $(window).bind("popstate", checkFragment);
-
-  // ... and we'll also call it when the page has loaded
-  // (which is right now).
-  checkFragment();
-}
-
 var searchTable = function() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("search");
@@ -285,7 +226,7 @@ var searchTable = function() {
     }
   });*/
 
-  window.location = "/vincent-de-paul/search/"+input.value
+  window.location = "/vincent-de-paul/search/"+input.value+"/1"
 }
 
 // removes highlighting by replacing each em tag within the specified elements with it's content
