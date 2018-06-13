@@ -16,8 +16,18 @@ jQuery(function($) {
   });
 
   $("#dataTable").on("click", "th i", function() {
-    var index = $("#dataTable thead tr th").index($(this).parent());
-    sortTable(index);
+    var sortBy = $(this).parent().data("sort"), nextUrl,
+      url = window.location.pathname.split("/");
+    if (url[2] == "sortBy") {
+      url[3] = sortBy;
+    } else {
+      nextUrl = url.insert(2, "sortBy/" + sortBy);
+    }
+    nextUrl = url.join("/");
+
+    window.location = nextUrl
+
+    // sortTable(index);
   });
 
   $('#add-row-form :input:not([type="submit"])').focusin(function() {
@@ -65,6 +75,10 @@ jQuery(function($) {
   });
 });
 
+Array.prototype.insert = function ( index, item ) {
+    this.splice( index, 0, item );
+};
+
 var changeToPage = function(event, pageNum) {
     event.preventDefault();
     var data = {
@@ -92,7 +106,13 @@ var changeToPage = function(event, pageNum) {
         $("#dataTable tbody").html(html);
       }
     });*/
-    window.location = "/vincent-de-paul/"+data.pageNum
+    var page = window.location.pathname.split("/").slice(-1), nextUrl;
+    if(isNaN(page)) {
+      nextUrl = window.location.pathname + "/" + data.pageNum;
+    } else {
+      nextUrl = window.location.pathname.replace(page, data.pageNum);
+    }
+    window.location = nextUrl
   }
 
 var addNewRow = function(data) {
@@ -226,7 +246,7 @@ var searchTable = function() {
     }
   });*/
 
-  window.location = "/vincent-de-paul/search/"+input.value+"/1"
+  window.location = "/vincent-de-paul/" + (input.value == "" ? "" : "search/" + input.value + "/1");
 }
 
 // removes highlighting by replacing each em tag within the specified elements with it's content
