@@ -11,7 +11,7 @@ var loadPage = function(req, res, next) {
 	var skips = pageSize * (pageNum - 1);
 	var total, sort = {};
 	sort[sortBy] = -1;
-	console.log(req.params.sortBy);
+	console.log(req.params);
 	IncomeExpenditure.count(function(err, data){
 		total = data;
 		if (pageNum > total/pageSize + 1) {
@@ -73,15 +73,15 @@ var dateFilterPage = function(req, res, next) {
 }
 
 /* GET Detail page. */
-router.get('/:page?', loadPage);
-router.get('/sortBy/:sortBy?/:page?', loadPage);
+router.get('/page=:page?', loadPage);
+router.get('/sortBy=:sortBy&page=:page', loadPage);
 
 /* GET Search page. */
-router.get('/search/:value?/:page?', searchPage);
-router.get('/sortBy?/:sortBy?/search/:value?/:page?', searchPage);
+router.get('/search=:value&page=:page', searchPage);
+router.get('/sortBy=:sortBy&search=:value&page=:page', searchPage);
 
 /* GET Date Filter page. */
 router.get('/get_date_filter/:x?/:y?', dateFilterPage);
-router.get('/get_date_filter/sortBy?/:sortBy?/:x?/:y?', dateFilterPage);
+router.get('/get_date_filter/sortBy=:sortBy?/:x?&:y?', dateFilterPage);
 
 module.exports = router;

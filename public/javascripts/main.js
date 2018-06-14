@@ -18,12 +18,12 @@ jQuery(function($) {
   $("#dataTable").on("click", "th i", function() {
     var sortBy = $(this).parent().data("sort"), nextUrl,
       url = window.location.pathname.split("/");
-    if (url[2] == "sortBy") {
-      url[3] = sortBy;
+    if (url[2].indexOf("sortBy") > -1) {
+      url[2] = "sortBy=" + sortBy;
     } else {
-      nextUrl = url.insert(2, "sortBy/" + sortBy);
+      nextUrl = url.insert(2, "sortBy=" + sortBy);
     }
-    nextUrl = url.join("/");
+    nextUrl = url.join("/") + window.location.search;
 
     window.location = nextUrl
 
@@ -64,8 +64,9 @@ jQuery(function($) {
       };
     window.location = "/vincent-de-paul/get_date_filter?x="+data.x+"&y="+data.y
   });
-  var startPage = parseInt(window.location.pathname.split('/').slice(-1)[0]) > 0 ? parseInt(window.location.pathname.split('/').slice(-1)[0]) : 1;
-  startPage = parseInt(window.location.pathname.split('/').slice(-1)[0]) > Math.ceil($("#total").val()/5) ? 1 : startPage;
+  var pageParam = window.location.href.split('/').slice(-1)[0],
+    pageNum = parseInt(pageParam.substring(pageParam.indexOf("page=") + 5)),
+    startPage = pageNum > 0 && pageNum <= Math.ceil($("#total").val()/5) ? pageNum : 1;
   $('#pagination').twbsPagination({
       totalPages: Math.ceil($("#total").val()/5),
       visiblePages: 5,
@@ -73,6 +74,7 @@ jQuery(function($) {
       initiateStartPageClick: false,
       onPageClick: changeToPage
   });
+  searchHighlighting();
 });
 
 Array.prototype.insert = function ( index, item ) {
@@ -85,32 +87,12 @@ var changeToPage = function(event, pageNum) {
       pageNum: pageNum,
       pageSize: 5
     };
-/*    $.ajax({
-      type: "GET",
-      url: "/vincent-de-paul/"+data.pageNum,
-      success: function( response ) {
-        var template = 
-          "<tr data-node-id='<%= data._id %>'>"+
-            "<td><%= data.date.slice(0,7) %></td>"+
-            "<td><%= data.voucher %></td>"+
-            "<td><%= data.details %></td>"+
-            "<td><%= data.credit %></td>"+
-            "<td><%= data.debit %></td>"+
-            "<td><%= data.bank_credit_debit %></td>"+
-            "<td><%= data.cash_in_bank %></td>"+
-            "<td><%= data.cash_in_hand %></td>"+
-          "</tr>", html;
-        $(response).each(function(index, el) {
-          html += ejs.render(template, {data: el});
-        });
-        $("#dataTable tbody").html(html);
-      }
-    });*/
-    var page = window.location.pathname.split("/").slice(-1), nextUrl;
-    if(isNaN(page)) {
-      nextUrl = window.location.pathname + "/" + data.pageNum;
+    var totalPath = window.location.pathname + window.location.search,
+      page = totalPath.split("/").slice(-1)[0], nextUrl;
+    if(page.indexOf("page=") > -1) {
+      nextUrl = totalPath.replace(totalPath.substring(totalPath.indexOf("page=")), "page=" +data.pageNum);
     } else {
-      nextUrl = window.location.pathname.replace(page, data.pageNum);
+      nextUrl = totalPath + "&page=" + data.pageNum;
     }
     window.location = nextUrl
   }
@@ -154,99 +136,10 @@ var resetForm = function($form) {
   });
 }
 
-function sortTable(n) {
-  var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-  table = document.getElementById("dataTable");
-  switching = true;
-  // Set the sorting direction to ascending:
-  dir = "asc"; 
-  /* Make a loop that will continue until
-  no switching has been done: */
-  while (switching) {
-    // Start by saying: no switching is done:
-    switching = false;
-    rows = table.getElementsByTagName("TR");
-    /* Loop through all table rows (except the
-    first, which contains table headers): */
-    for (i = 1; i < (rows.length - 1); i++) {
-      // Start by saying there should be no switching:
-      shouldSwitch = false;
-      /* Get the two elements you want to compare,
-      one from current row and one from the next: */
-      x = parseInt(rows[i].getElementsByTagName("TD")[n].innerHTML);
-      y = parseInt(rows[i + 1].getElementsByTagName("TD")[n].innerHTML);
-      if (n == 2) {
-        x = rows[i].getElementsByTagName("TD")[n].innerHTML.toLowerCase();
-        y = rows[i + 1].getElementsByTagName("TD")[n].innerHTML.toLowerCase();
-      } else if (n == 0) {
-        var $first = rows[i].getElementsByTagName("TD")[n],
-          $second = rows[i + 1].getElementsByTagName("TD")[n],
-          date1 = $first.innerHTML.split('-'),
-          date2 = $second.innerHTML.split('-');
-        x = new Date(date1[0], date1[1]-1).getTime();
-        y = new Date(date2[0], date2[1]-1).getTime();
-      }
-      /* Check if the two rows should switch place,
-      based on the direction, asc or desc: */
-      if (dir == "asc") {
-        if (x > y) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      } else if (dir == "desc") {
-        if (x < y) {
-          // If so, mark as a switch and break the loop:
-          shouldSwitch = true;
-          break;
-        }
-      }
-    }
-    if (shouldSwitch) {
-      /* If a switch has been marked, make the switch
-      and mark that a switch has been done: */
-      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-      switching = true;
-      // Each time a switch is done, increase this count by 1:
-      switchcount ++; 
-    } else {
-      /* If no switching has been done AND the direction is "asc",
-      set the direction to "desc" and run the while loop again. */
-      if (switchcount == 0 && dir == "asc") {
-        dir = "desc";
-        switching = true;
-      }
-    }
-  }
-}
-
 var searchTable = function() {
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("search");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("dataTable");
-  tr = table.getElementsByTagName("TR");
+  var input = document.getElementById("search");
 
-  removeHighlighting($("#dataTable tr em"));
-
-/*  $(tr).each(function(index) {
-    if (index !== 0) {
-      $row = $(this);
-
-      var $tdElement = $row.find("td:nth-child(3)");
-      var value = $tdElement.text();
-      var matchedIndex = value.toUpperCase().indexOf(filter);
-
-      if (matchedIndex > -1) {
-        if ($row.hasClass('hide-row')) $row.removeClass('hide-row');
-        addHighlighting($tdElement, filter, matchedIndex);
-      } else {
-        $row.addClass('hide-row');
-      }
-    }
-  });*/
-
-  window.location = "/vincent-de-paul/" + (input.value == "" ? "" : "search/" + input.value + "/1");
+  window.location = "/vincent-de-paul/" + (input.value == "" ? "" : "search=" + input.value + "&page=1");
 }
 
 // removes highlighting by replacing each em tag within the specified elements with it's content
@@ -263,4 +156,23 @@ var addHighlighting = function(element, textToHighlight, index) {
       newText = text.substring(0,index) + '<em>' + text.substring(index,index+textToHighlight.length) + '</em>' + text.substring(index+textToHighlight.length,text.length);
 
     element.html(newText);
+}
+
+var searchHighlighting = function() {
+  var input, filter, table, tr, td, i, $tdElement, value, matchedIndex;
+  input = document.getElementById("search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("dataTable");
+  tr = table.getElementsByTagName("TR");
+
+  removeHighlighting($("#dataTable tr em"));
+  $(tr).each(function(index) {
+      $row = $(this);
+
+      var $tdElement = $row.find("td:nth-child(3)");
+      var value = $tdElement.text();
+      var matchedIndex = value.toUpperCase().indexOf(filter);
+
+      addHighlighting($tdElement, filter, matchedIndex);
+  });
 }
