@@ -34,7 +34,11 @@ jQuery(function($) {
     $('#add-row-form :input:not([type="submit"])').removeClass("error");
   });
 
-  $("#search").on("keyup", searchTable);
+  $("#search").on("keyup", function(e) {
+    if(e.keyCode === 13){
+      searchTable();
+    }
+  });
 
   $form.on( "submit", function(event) {
     event.preventDefault();
@@ -92,7 +96,7 @@ var changeToPage = function(event, pageNum) {
     if(page.indexOf("page=") > -1) {
       nextUrl = totalPath.replace(totalPath.substring(totalPath.indexOf("page=")), "page=" +data.pageNum);
     } else {
-      nextUrl = totalPath + "&page=" + data.pageNum;
+      nextUrl = totalPath + "page=" + data.pageNum;
     }
     window.location = nextUrl
   }

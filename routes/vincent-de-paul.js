@@ -73,8 +73,9 @@ var dateFilterPage = function(req, res, next) {
 }
 
 /* GET Detail page. */
+router.get('/', loadPage);
 router.get('/page=:page?', loadPage);
-router.get('/sortBy=:sortBy&page=:page', loadPage);
+router.get('/sortBy=:sortBy/page=:page', loadPage);
 
 /* GET Search page. */
 router.get('/search=:value&page=:page', searchPage);
