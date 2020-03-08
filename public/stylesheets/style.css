@@ -172,7 +172,7 @@ a {
       outline: none;
       font-size: 20px;
       cursor: pointer;
-      width: 95px;
+      min-width: 95px;
       flex: 2; }
       .main-wrapper content button i {
         color: #4CAF50;
@@ -231,6 +231,8 @@ a {
           padding: 8px; }
         .main-wrapper content .table-wrapper table tr td em {
           background-color: #ffa500; }
+        .main-wrapper content .table-wrapper table tr td.empty-cell {
+          text-align: center; }
         .main-wrapper content .table-wrapper table tr th {
           padding-top: 12px;
           padding-bottom: 12px;

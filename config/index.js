@@ -1,0 +1,5 @@
+const DEFAULT_PAGE_SIZE = 5
+
+module.exports = {
+    DEFAULT_PAGE_SIZE: DEFAULT_PAGE_SIZE,
+}
